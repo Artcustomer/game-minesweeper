@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+	<item id="0" type="game">
+		<title>
+			<fr>Facile</fr>
+			<en>Easy</en>
+		</title>
+		<difficulty>easy</difficulty>
+	</item>
+	<item id="1" type="game">
+		<title>
+			<fr>Intermédiaire</fr>
+			<en>Intermediate</en>
+		</title>
+		<difficulty>intermediate</difficulty>
+	</item>
+	<item id="2" type="game">
+		<title>
+			<fr>Difficile</fr>
+			<en>Hard</en>
+		</title>
+		<difficulty>hard</difficulty>
+	</item>
+</data>
