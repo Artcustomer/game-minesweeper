@@ -1,7 +1,10 @@
 package artcustomer.game.minesweeper.api {
-	import artcustomer.maxima.context.GameContext;
+	import artcustomer.maxima.context.FlashGameContext;
 	import artcustomer.maxima.events.*;
+	import artcustomer.maxima.debug.stats.StatsManager;
 	import artcustomer.maxima.utils.consts.*;
+	import artcustomer.maxima.entities.model.ScoreModel;
+	import artcustomer.maxima.entities.command.ScoreCommand;
 	
 	import artcustomer.game.minesweeper.core.loader.GameAssetsLoader;
 	import artcustomer.game.minesweeper.core.view.MainMenuView;
@@ -14,7 +17,7 @@ package artcustomer.game.minesweeper.api {
 	 * 
 	 * @author David Massenot
 	 */
-	public class MineSweeperGame extends GameContext {
+	public class MineSweeperGame extends FlashGameContext {
 		
 		
 		/**
@@ -25,8 +28,6 @@ package artcustomer.game.minesweeper.api {
 			
 			this.contextWidth = GameUtils.GAME_SCREEN_WIDTH;
 			this.contextHeight = GameUtils.GAME_SCREEN_HEIGHT;
-			this.contextMinWidth = GameUtils.GAME_SCREEN_WIDTH;
-			this.contextMinHeight = GameUtils.GAME_SCREEN_HEIGHT;
 			this.name = GameUtils.GAME_NAME;
 			this.mode = GameMode.DEV;
 			this.assetsPath = GameAssetsPath.ASSETS_PATH;
@@ -111,21 +112,33 @@ package artcustomer.game.minesweeper.api {
 		
 		
 		/**
+		 * Called when framework is ready
+		 */
+		override protected function onReady():void {
+			this.flashGameEngine.setGlobalLoader(GameAssetsLoader, CoreElements.GLOBAL_LOADER);
+			this.flashGameEngine.addView(MainMenuView, CoreElements.VIEW_MAINMENU);
+			this.flashGameEngine.setGame(MineSweeperDisplayGame, CoreElements.MINESWEEPER_DISPLAYGAME);
+			
+			this.logicEngine.addModel(ScoreModel);
+			this.logicEngine.addCommand(ScoreCommand);
+			
+			this.start();
+		}
+		
+		/**
 		 * Entry point.
 		 */
 		override public function setup():void {
+			//var stats:StatsManager = StatsManager.getInstance();
+			//stats.stageReference = this.stageReference;
+			//stats.init();
+			
 			listenEvents();
 			
 			super.setup();
 			
 			this.moveLogo(LogoPosition.BOTTOM_RIGHT, 5, 5);
 			this.shore.put(GameUtils.GAME_DEFAULT_LANGUAGE, ShoreProperties.LANGUAGE);
-			
-			this.gameEngine.setGlobalLoader(GameAssetsLoader, CoreElements.GLOBAL_LOADER);
-			this.gameEngine.setView(MainMenuView, CoreElements.VIEW_MAINMENU);
-			this.gameEngine.setGame(MineSweeperDisplayGame, CoreElements.MINESWEEPER_DISPLAYGAME);
-			
-			this.start();
 		}
 		
 		/**

@@ -96,13 +96,13 @@ package artcustomer.game.minesweeper.core.game.timer {
 		 */
 		private function handleTimer(e:TimerEvent):void {
 			switch (e.type) {
-				case('timer'):
+				case(TimerEvent.TIMER):
 					_tick++;
 					
 					dispatchTimerEvent(GameTimerEvent.ON_TICK);
 					break;
 					
-				case('timerComplete'):
+				case(TimerEvent.TIMER_COMPLETE):
 					dispatchTimerEvent(GameTimerEvent.ON_TIME_LIMIT);
 					break;
 					

@@ -12,7 +12,7 @@ package artcustomer.game.minesweeper.core.loader {
 	 * @author David Massenot
 	 */
 	public class GameAssetsLoader extends GlobalLoader {
-		private static const ASSETS_DESCRIPTION:String = 'Loading assets';
+		private static const ASSETS_DESCRIPTION:String = 'loading assets';
 		
 		private var _preloadBar:PreloadBar;
 		
@@ -98,6 +98,7 @@ package artcustomer.game.minesweeper.core.loader {
 		 * @private
 		 */
 		private function goForward():void {
+			trace('goForward');
 			this.context.instance.gameEngine.navigationSystem.timelineForward();
 		}
 		
@@ -128,6 +129,8 @@ package artcustomer.game.minesweeper.core.loader {
 		 * @param	e
 		 */
 		override protected function onCompleteLoading(e:AssetsLoaderEvent):void {
+			trace(e);
+			
 			switch (e.description) {
 				case(ASSETS_DESCRIPTION):
 					goForward();

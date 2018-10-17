@@ -6,7 +6,7 @@ package artcustomer.game.minesweeper.display.ui.menu.items {
 	import flash.text.GridFitType;
 	import flash.text.AntiAliasType;
 	
-	import artcustomer.maxima.engine.AssetsLoader;
+	import artcustomer.maxima.context.GameContext;
 	import artcustomer.maxima.extensions.display.ui.list.item.AbstractListItem;
 	
 	import artcustomer.game.minesweeper.core.model.vo.MainMenuValueObject;
@@ -24,6 +24,9 @@ package artcustomer.game.minesweeper.display.ui.menu.items {
 		private var _textField:TextField;
 		private var _textFormat:TextFormat;
 		
+		private var _added:Boolean;
+		private var _removed:Boolean;
+		
 		
 		/**
 		 * Constructor
@@ -40,7 +43,7 @@ package artcustomer.game.minesweeper.display.ui.menu.items {
 		 * @private
 		 */
 		private function setupBitmap():void {
-			var bmpSource:Bitmap = AssetsLoader.getInstance().getAssetByName('mine_small').data;
+			var bmpSource:Bitmap = GameContext.currentContext.instance.assetsLoader.getAssetByName('mine_small').data;
 			
 			_bitmap = new Bitmap(bmpSource.bitmapData.clone());
 			_bitmap.y = 7;
@@ -146,6 +149,9 @@ package artcustomer.game.minesweeper.display.ui.menu.items {
 			destroyTextField();
 			destroyTextFormat();
 			
+			_added = false;
+			_removed = false;
+			
 			super.destroy();
 		}
 		
@@ -176,6 +182,35 @@ package artcustomer.game.minesweeper.display.ui.menu.items {
 			// 
 			
 			super.select();
+		}
+		
+		
+		/**
+		 * @private
+		 */
+		public function get added():Boolean {
+			return _added;
+		}
+		
+		/**
+		 * @private
+		 */
+		public function set added(value:Boolean):void {
+			_added = value;
+		}
+		
+		/**
+		 * @private
+		 */
+		public function get removed():Boolean {
+			return _removed;
+		}
+		
+		/**
+		 * @private
+		 */
+		public function set removed(value:Boolean):void {
+			_removed = value;
 		}
 	}
 }

@@ -7,8 +7,8 @@ package artcustomer.game.minesweeper.core.game.hud.mine {
 	import flash.text.GridFitType;
 	import flash.text.AntiAliasType;
 	
+	import artcustomer.maxima.context.GameContext;
 	import artcustomer.maxima.base.IDestroyable;
-	import artcustomer.maxima.engine.AssetsLoader;
 	
 	import artcustomer.game.minesweeper.utils.consts.*;
 	
@@ -44,7 +44,7 @@ package artcustomer.game.minesweeper.core.game.hud.mine {
 		 * @private
 		 */
 		private function setupBitmap():void {
-			var bmpSource:Bitmap = AssetsLoader.getInstance().getAssetByName('mine_small').data;
+			var bmpSource:Bitmap = GameContext.currentContext.instance.assetsLoader.getAssetByName('mine_small').data;
 			
 			_bitmap = new Bitmap(bmpSource.bitmapData.clone());
 			_bitmap.x = 0;

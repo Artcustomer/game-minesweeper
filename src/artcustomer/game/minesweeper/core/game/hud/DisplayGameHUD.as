@@ -143,7 +143,7 @@ package artcustomer.game.minesweeper.core.game.hud {
 		 */
 		private function handleRestartButton(e:Event):void {
 			switch (e.type) {
-				case('onButtonSelect'):
+				case(TextButton.ON_BUTTON_SELECT):
 					dispatchHUDEvent(GameHUDEvent.ON_PRESS_RESTART);
 					break;
 					
@@ -184,7 +184,7 @@ package artcustomer.game.minesweeper.core.game.hud {
 		 */
 		private function handleQuitButton(e:Event):void {
 			switch (e.type) {
-				case('onButtonSelect'):
+				case(TextButton.ON_BUTTON_SELECT):
 					dispatchHUDEvent(GameHUDEvent.ON_PRESS_QUIT);
 					break;
 					

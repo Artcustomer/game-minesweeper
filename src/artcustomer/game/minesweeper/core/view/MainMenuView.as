@@ -10,6 +10,7 @@ package artcustomer.game.minesweeper.core.view {
 	
 	import artcustomer.game.minesweeper.core.model.vo.MainMenuValueObject;
 	import artcustomer.game.minesweeper.display.ui.menu.MainMenu;
+	import artcustomer.game.minesweeper.display.ui.menu.events.MainMenuEvent;
 	import artcustomer.game.minesweeper.utils.consts.*;
 	
 	
@@ -95,7 +96,8 @@ package artcustomer.game.minesweeper.core.view {
 		 */
 		private function setupMainMenu():void {
 			_mainMenu = new MainMenu(this.context.instance.assetsLoader.getAssetByName('mainmenu').data);
-			_mainMenu.addEventListener(MenuListEvent.ON_SELECT_ITEM, handleMainMenu, false, 0, true);
+			_mainMenu.addEventListener(MenuListEvent.ON_SELECT_ITEM, handleMenuList, false, 0, true);
+			_mainMenu.addEventListener(MainMenuEvent.ON_HIDE_MENU, handleMainMenu, false, 0, true);
 			
 			this.displayContainer.addChild(_mainMenu);
 		}
@@ -107,6 +109,7 @@ package artcustomer.game.minesweeper.core.view {
 			this.displayContainer.removeChild(_mainMenu);
 			
 			_mainMenu.removeEventListener(MenuListEvent.ON_SELECT_ITEM, handleMainMenu);
+			_mainMenu.removeEventListener(MainMenuEvent.ON_HIDE_MENU, handleMainMenu);
 			_mainMenu.destroy();
 			_mainMenu = null
 		}
@@ -119,6 +122,13 @@ package artcustomer.game.minesweeper.core.view {
 				_mainMenu.x = (this.context.contextWidth - _mainMenu.width) >> 1;
 				_mainMenu.y = (this.context.contextHeight - _mainMenu.height) >> 1;
 			}
+		}
+		
+		/**
+		 * @private
+		 */
+		private function hideMainMenu():void {
+			_mainMenu.hide();
 		}
 		
 		/**
@@ -145,13 +155,27 @@ package artcustomer.game.minesweeper.core.view {
 		/**
 		 * @private
 		 */
-		private function handleMainMenu(e:MenuListEvent):void {
+		private function handleMenuList(e:MenuListEvent):void {
 			switch (e.type) {
 				case('onSelectItem'):
 					this.context.instance.shore.remove(ShoreProperties.GAME_DIFFICULTY);
 					this.context.instance.shore.put((e.valueObject as MainMenuValueObject).difficulty, ShoreProperties.GAME_DIFFICULTY);
 					
 					goForward();
+					break;
+					
+				default:
+					break;
+			}
+		}
+		
+		/**
+		 * @private
+		 */
+		private function handleMainMenu(e:MainMenuEvent):void {
+			switch (e.type) {
+				case(MainMenuEvent.ON_HIDE_MENU):
+					super.onExit();
 					break;
 					
 				default:
@@ -213,6 +237,8 @@ package artcustomer.game.minesweeper.core.view {
 		 * Entry point.
 		 */
 		override protected function onEntry():void {
+			trace('onEntry');
+			
 			super.onEntry();
 			
 			setupLogo();
@@ -226,9 +252,7 @@ package artcustomer.game.minesweeper.core.view {
 		 * Exit point.
 		 */
 		override protected function onExit():void {
-			// 
-			
-			super.onExit();
+			hideMainMenu();
 		}
 		
 		/**

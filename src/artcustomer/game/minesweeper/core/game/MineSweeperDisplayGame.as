@@ -85,11 +85,11 @@ package artcustomer.game.minesweeper.core.game {
 		 */
 		private function handleGameTimer(e:GameTimerEvent):void {
 			switch (e.type) {
-				case('onTick'):
+				case(GameTimerEvent.ON_TICK):
 					_displayGameHUD.updateTime(e.tick);
 					break;
 					
-				case('onTimeLimit'):
+				case(GameTimerEvent.ON_TIME_LIMIT):
 					_displayGameLogic.gameOver();
 					break;
 					
@@ -144,26 +144,28 @@ package artcustomer.game.minesweeper.core.game {
 		 */
 		private function handleGameLogic(e:GameLogicEvent):void {
 			switch (e.type) {
-				case('onGameStart'):
+				case(GameLogicEvent.ON_GAME_START):
+					_gameTimer.stop();
 					_gameTimer.start();
 					_displayGameHUD.removeGameOver();
+					_displayGameHUD.updateTime(0);
 					_displayGameHUD.updateMineCount(e.mineCount);
 					_displayGameHUD.updateDifficultyMode(_gameDifficultyMode.currentMode.name);
 					break;
 					
-				case('onGameOver'):
+				case(GameLogicEvent.ON_GAME_OVER):
 					//this.context.instance.sfxEngine.playStream('assets/sounds/explosion.mp3');
 					_displayGameHUD.displayGameOver(false);
 					_gameTimer.stop();
 					break;
 					
-				case('onGameWin'):
+				case(GameLogicEvent.ON_GAME_WIN):
 					_displayGameHUD.displayGameOver(true);
 					_displayGameHUD.updateMineCount(0);
 					_gameTimer.stop();
 					break;
 					
-				case('mineCountChange'):
+				case(GameLogicEvent.MINE_COUNT_CHANGE):
 					_displayGameHUD.updateMineCount(e.mineCount);
 					break;
 					
@@ -214,11 +216,11 @@ package artcustomer.game.minesweeper.core.game {
 		 */
 		private function handleGameHUD(e:GameHUDEvent):void {
 			switch (e.type) {
-				case('onPressRestart'):
+				case(GameHUDEvent.ON_PRESS_RESTART):
 					_displayGameLogic.start();
 					break;
 					
-				case('onPressQuit'):
+				case(GameHUDEvent.ON_PRESS_QUIT):
 					this.context.instance.gameEngine.navigationSystem.timelineBack();
 					break;
 					
@@ -267,13 +269,6 @@ package artcustomer.game.minesweeper.core.game {
 		 */
 		override protected function start():void {
 			_displayGameLogic.start();
-		}
-		
-		/**
-		 * Render Game.
-		 */
-		override protected function render():void {
-			
 		}
 		
 		/**

@@ -8,6 +8,9 @@ package artcustomer.game.minesweeper.core.game.logic {
 	import artcustomer.game.minesweeper.core.game.logic.cells.*;
 	import artcustomer.game.minesweeper.events.*;
 	
+	import com.greensock.TweenLite;
+	import com.greensock.easing.*;
+	
 	[Event(name="onGameStart", type="artcustomer.game.minesweeper.events.GameLogicEvent")]
 	[Event(name="onGameOver", type="artcustomer.game.minesweeper.events.GameLogicEvent")]
 	[Event(name="onGameWin", type="artcustomer.game.minesweeper.events.GameLogicEvent")]
@@ -85,6 +88,7 @@ package artcustomer.game.minesweeper.core.game.logic {
 		private function createGrid():void {
 			var row:int = 0;
 			var column:int = 0;
+			var total:int = 0;
 			var columnStack:Array;
 			var cell:MineCell;
 			
@@ -101,12 +105,17 @@ package artcustomer.game.minesweeper.core.game.logic {
 					cell.addEventListener(MineCellEvent.ON_CELL_UNFLAGGED, handleMineCells, false, 0, true);
 					cell.addEventListener(MineCellEvent.ON_CELL_EXPLODE, handleMineCells, false, 0, true);
 					
+					cell.alpha = 0;
 					cell.x = (cell.width + 1) * row;
 					cell.y = (cell.height + 1) * column;
 					
 					this.addChild(cell);
 					
 					columnStack.push(cell);
+					
+					TweenLite.to(cell, .5, { alpha : 1, ease : Strong.easeOut, delay : total * 0.01 } );
+					
+					total++;
 				}
 				
 				_cellStack.push(columnStack);
@@ -331,6 +340,7 @@ package artcustomer.game.minesweeper.core.game.logic {
 					break;
 					
 				case('onCellExplode'):
+					playSound(this.context.instance.assetsPath + 'sounds/explosion.mp3');
 					revealAllMines();
 					gameOver(false);
 					break;
@@ -388,6 +398,24 @@ package artcustomer.game.minesweeper.core.game.logic {
 		}
 		
 		//---------------------------------------------------------------------
+		//  Sound
+		//---------------------------------------------------------------------
+		
+		/**
+		 * @private
+		 */
+		private function initSound():void {
+			this.context.instance.sfxEngine.setVolume(.5);
+		}
+		
+		/**
+		 * @private
+		 */
+		private function playSound(stream:String):void {
+			this.context.instance.sfxEngine.playStreamOnChannel(stream);
+		}
+		
+		//---------------------------------------------------------------------
 		//  Event Dispatching
 		//---------------------------------------------------------------------
 		
@@ -405,6 +433,8 @@ package artcustomer.game.minesweeper.core.game.logic {
 		public function start():void {
 			if (!_isFirstStart) {
 				_isFirstStart = true;
+				
+				initSound();
 			} else {
 				_mineCellFactory.resetAllCells();
 			}

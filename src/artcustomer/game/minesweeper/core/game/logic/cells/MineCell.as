@@ -5,6 +5,7 @@ package artcustomer.game.minesweeper.core.game.logic.cells {
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	
+	import artcustomer.maxima.context.GameContext;
 	import artcustomer.maxima.engine.AssetsLoader;
 	import artcustomer.maxima.utils.tools.StringTools;
 	
@@ -24,6 +25,8 @@ package artcustomer.game.minesweeper.core.game.logic.cells {
 	 */
 	public class MineCell extends Sprite {
 		private static const SIZE:int = 40;
+		
+		private var _assetsLoader:AssetsLoader;
 		
 		private var _background:Bitmap;
 		private var _cell:Bitmap;
@@ -48,6 +51,8 @@ package artcustomer.game.minesweeper.core.game.logic.cells {
 		public function MineCell(row:int, column:int) {
 			_row = row;
 			_column = column;
+			
+			_assetsLoader = GameContext.currentContext.instance.assetsLoader;
 			
 			setupBackground();
 			setupCell();
@@ -100,7 +105,7 @@ package artcustomer.game.minesweeper.core.game.logic.cells {
 		 * @private
 		 */
 		private function setupCell():void {
-			var bmpSource:Bitmap = AssetsLoader.getInstance().getAssetByName('cell').data;
+			var bmpSource:Bitmap = _assetsLoader.getAssetByName('cell').data;
 			
 			_cell = new Bitmap(bmpSource.bitmapData.clone());
 			
@@ -131,7 +136,7 @@ package artcustomer.game.minesweeper.core.game.logic.cells {
 		 * @private
 		 */
 		private function setupMine():void {
-			var bmpSource:Bitmap = AssetsLoader.getInstance().getAssetByName('cell_mine').data;
+			var bmpSource:Bitmap = _assetsLoader.getAssetByName('cell_mine').data;
 			
 			_mine = new Bitmap(bmpSource.bitmapData.clone());
 			_mine.x = (SIZE - _mine.width) >> 1;
@@ -165,7 +170,7 @@ package artcustomer.game.minesweeper.core.game.logic.cells {
 		 * @private
 		 */
 		private function setupFlag():void {
-			var bmpSource:Bitmap = AssetsLoader.getInstance().getAssetByName('cell_flag').data;
+			var bmpSource:Bitmap = _assetsLoader.getAssetByName('cell_flag').data;
 			
 			_flag = new Bitmap(bmpSource.bitmapData.clone());
 			_flag.x = (SIZE - _flag.width) >> 1;

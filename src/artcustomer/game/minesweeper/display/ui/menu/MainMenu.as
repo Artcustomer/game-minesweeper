@@ -1,14 +1,18 @@
 package artcustomer.game.minesweeper.display.ui.menu {
+	import flash.events.Event;
 	import flash.events.MouseEvent;
 	
 	import artcustomer.maxima.engine.Shore;
 	import artcustomer.maxima.extensions.display.ui.list.AbstractList;
 	import artcustomer.maxima.extensions.display.ui.list.item.AbstractListItem;
-	import artcustomer.maxima.extensions.display.ui.list.layout.VerticalListLayout;
 	
 	import artcustomer.game.minesweeper.core.model.vo.MainMenuValueObject;
+	import artcustomer.game.minesweeper.display.ui.menu.events.MainMenuEvent;
+	import artcustomer.game.minesweeper.display.ui.menu.layout.TweenVerticalListLayout;
 	import artcustomer.game.minesweeper.display.ui.menu.items.MainMenuItem;
 	import artcustomer.game.minesweeper.utils.consts.ShoreProperties;
+	
+	[Event(name = "onHideMenu", type = "artcustomer.game.minesweeper.display.ui.menu.events.MainMenuEvent")]
 	
 	
 	/**
@@ -19,7 +23,7 @@ package artcustomer.game.minesweeper.display.ui.menu {
 	public class MainMenu extends AbstractList {
 		private var _xmlData:XMLList;
 		
-		private var _layout:VerticalListLayout;
+		private var _layout:TweenVerticalListLayout;
 		
 		
 		/**
@@ -91,10 +95,24 @@ package artcustomer.game.minesweeper.display.ui.menu {
 		 * @private
 		 */
 		private function setDisplayLayout():void {
-			_layout = new VerticalListLayout();
+			_layout = new TweenVerticalListLayout();
 			_layout.margin = 10;
 			
 			this.setLayout(_layout);
+		}
+		
+		/**
+		 * @private
+		 */
+		private function hideOnLayout():void {
+			_layout.hide(onHideLayout);
+		}
+		
+		/**
+		 * @private
+		 */
+		private function onHideLayout():void {
+			this.dispatchEvent(new MainMenuEvent(MainMenuEvent.ON_HIDE_MENU, false, false));
 		}
 		
 		//---------------------------------------------------------------------
@@ -123,6 +141,13 @@ package artcustomer.game.minesweeper.display.ui.menu {
 			}
 		}
 		
+		
+		/**
+		 * Hide menu.
+		 */
+		public function hide():void {
+			hideOnLayout();
+		}
 		
 		/**
 		 * Destructor.
